@@ -6,9 +6,9 @@ db = SQLAlchemy()
 
                
 class Planets(db.Model):
-    plaid = db.Column(db.Integer, primary_key=True) 
+    id = db.Column(db.Integer, primary_key=True) 
     name = db.Column(db.String(50), nullable=False)
-    description = db.Column(db.String(250))
+    description = db.Column(db.String(550))
     diameter = db.Column(db.String(100))
     rotation_period = db.Column(db.String(100))
     orbital_period = db.Column(db.String(100))
@@ -17,6 +17,8 @@ class Planets(db.Model):
     Climate = db.Column(db.String(100))
     terrain = db.Column(db.String(100))
     surface_water = db.Column(db.String(100))
+    imgPlanet = db.Column(db.String(300))
+    entity = db.Column(db.String(100))
     
 
     def __repr__(self):
@@ -24,7 +26,7 @@ class Planets(db.Model):
 
     def serialize(self):
         return {
-            "plaid": self.plaid,
+            "id": self.id,
             "name": self.name,
             "description": self.description,
             "diameter": self.diameter,
@@ -35,14 +37,16 @@ class Planets(db.Model):
             "Climate": self.Climate,
             "terrain": self.terrain,
             "surface_water": self.surface_water,
+            "imgPlanet": self.imgPlanet,
+            "entity": self.entity,
                              
             # do not serialize the password, its a security breach
         }
 
 class Character(db.Model):
-    chaid = db.Column(db.Integer, primary_key=True)
-    full_name = db.Column(db.String(100), nullable=False)
-    description = db.Column(db.String(250))
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), nullable=False)
+    description = db.Column(db.String(550))
     height = db.Column(db.String(100))
     mass = db.Column(db.String(100))
     hair_color = db.Column(db.String(100))
@@ -50,6 +54,8 @@ class Character(db.Model):
     skin_color = db.Column(db.String(100))
     birth_year = db.Column(db.String(100))
     gender = db.Column(db.String(100))
+    imgCharacter = db.Column(db.String(300))
+    entity = db.Column(db.String(100))
  
 
     def __repr__(self):
@@ -57,8 +63,8 @@ class Character(db.Model):
 
     def serialize(self):
         return {
-            "chaid": self.chaid,
-            "full_name": self.full_name,
+            "id": self.id,
+            "name": self.name,
             "description": self.description,
             "height": self.height,
             "mass": self.mass,
@@ -67,6 +73,8 @@ class Character(db.Model):
             "skin_color": self.skin_color,
             "gender": self.gender,
             "birth_year": self.birth_year,
+            "imgCharacter": self.imgCharacter,
+            "entity": self.entity,
            
             # do not serialize the password, its a security breach
         }
@@ -74,11 +82,11 @@ class Character(db.Model):
    
 
 class User(db.Model):
-    userid = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
     last_name = db.Column(db.String(100), nullable=False)
     email = db.Column(db.String(100), nullable=False)
-    password = db.Column(db.String(80), nullable=False)
+    password = db.Column(db.String(120), nullable=False)
     is_active = db.Column(db.Boolean(), nullable=False)
     favorites = db.relationship("Favorites", lazy=True)
 
@@ -87,7 +95,7 @@ class User(db.Model):
 
     def serialize(self):
         return {
-            "userid": self.userid,
+            "id": self.id,
             "name": self.name,
             "last_name": self.last_name,
             "email": self.email,
@@ -97,18 +105,18 @@ class User(db.Model):
         
 
 class Favorites(db.Model):
-    favid = db.Column(db.Integer, primary_key=True)
-    user_userid = db.Column(db.Integer, db.ForeignKey('user.userid'))
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     tipo = db.Column(db.String(100))
     object_id = db.Column(db.Integer, nullable=False)
     
     def __repr__(self):
-        return '<Favorites %r>' % self.favid
+        return '<Favorites %r>' % self.id
 
     def serialize(self):
         return {
-            "favid": self.favid,
-            "user_userid":self.user_userid,
+            "id": self.id,
+            "user_id":self.user_id,
             "tipo": self.tipo,
             "object_id": self.object_id,
                     
