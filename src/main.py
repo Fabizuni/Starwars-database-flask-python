@@ -76,11 +76,14 @@ def get_onePlanet(id):
     planet = Planets.query.get(id)    
     return jsonify(planet.serialize()), 200
 
-@app.route('/users/<int:id>/favorites', methods=['GET'])
-def get_favorites(id):
-    favorites = Favorites.query.filter_by(user_id = id)
+  #FAVORITOS ROUTER  
+
+@app.route('/users/favorites', methods=['GET'])
+def get_favorites():
+    favorites = Favorites.query.filter_by(user_id = user.id)
     # favorites = Favorites.query.all()
     # print(favorites)
+    
     results = list(map(lambda x: x.serialize(), favorites))
     # print(results)
     return jsonify(results), 200
@@ -92,12 +95,15 @@ def get_favorite():
     results = list(map(lambda x: x.serialize(), favorites))
     return jsonify(results), 200
 
-@app.route('/users/<int:id>/favorites', methods=['POST'])
-def add_fav(id):
+@app.route('/users/favorites', methods=['POST'])
+@jwt_required()
+def add_fav():
     
+    email = get_jwt_identity()
+    user = User.query.filter_by(email = email).first()
     # recibir info del request
     add_new_fav = request.get_json()
-    newFav = Favorites(user_id=id, tipo=add_new_fav["tipo"],object_id=add_new_fav["object_id"])
+    newFav = Favorites(user_id=user.id, tipo=add_new_fav["tipo"],object_id=add_new_fav["object_id"])
     db.session.add(newFav)
     db.session.commit()
 

@@ -118,7 +118,7 @@ class Favorites(db.Model):
             "id": self.id,
             "user_id":self.user_id,
             "tipo": self.tipo,
-            "object_id": self.object_id,
+            "object_id": self.object_id, #PARA QUE SIRVE ESTO
                     
             # do not serialize the password, its a security breach
         }
